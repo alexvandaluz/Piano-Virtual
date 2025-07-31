@@ -1,5 +1,13 @@
-
 const synth = new Tone.Synth().toDestination();
+
+let started = false;
+
+document.addEventListener('click', () => {
+  if (!started) {
+    Tone.start();
+    started = true;
+  }
+});
 
 const noteMap = {
   keyc: "C4",
@@ -16,11 +24,11 @@ const noteMap = {
   keyA: "A#4"
 };
 
-document.body.addEventListener('click', (event)=>{
-    const keyClick = event.target.dataset.key;
-     if (keyClick) {
-        playSound(keyClick);
-    }
+document.body.addEventListener('click', (event) => {
+  const keyClick = event.target.dataset.key;
+  if (keyClick) {
+    playSound(keyClick);
+  }
 });
 
 function playSound(keyClass) {
@@ -28,9 +36,7 @@ function playSound(keyClass) {
   const keyElement = document.querySelector(`.${keyClass}`);
 
   if (note) {
-    Tone.start().then(() => {
-      synth.triggerAttackRelease(note, "8n");
-    });
+    synth.triggerAttackRelease(note, "8n");
   }
 
   if (keyElement) {
@@ -38,4 +44,5 @@ function playSound(keyClass) {
     setTimeout(() => {
       keyElement.classList.remove('active');
     }, 300);
-  }}
+  }
+}
