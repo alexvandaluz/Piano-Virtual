@@ -16,13 +16,26 @@ const noteMap = {
   keyA: "A#4"
 };
 
-Object.keys(noteMap).forEach(className => {
-  const button = document.querySelector(`.${className}`);
-  if (button) {
-    button.addEventListener("click", () => {
-      Tone.start().then(() => {
-        synth.triggerAttackRelease(noteMap[className], "8n");
-      });
+document.body.addEventListener('click', (event)=>{
+    const keyClick = event.target.dataset.key;
+     if (keyClick) {
+        playSound(keyClick);
+    }
+});
+
+function playSound(keyClass) {
+  const note = noteMap[keyClass];
+  const keyElement = document.querySelector(`.${keyClass}`);
+
+  if (note) {
+    Tone.start().then(() => {
+      synth.triggerAttackRelease(note, "8n");
     });
   }
-});
+
+  if (keyElement) {
+    keyElement.classList.add('active');
+    setTimeout(() => {
+      keyElement.classList.remove('active');
+    }, 300);
+  }}
